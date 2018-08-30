@@ -2,9 +2,9 @@
 
  -- Tool to automate generation of FSC documentation, written in AutoIT.
 
+Created with AutoIT by Zachary Zhao (zachary.m.zhao@gmail.com)
 
-In order to use the tool, just open AutoFSC.exe.
-The script's code is in AutoFSC.au3. 
+In order to use the tool, open AutoFSC.exe and follow the instructions below.
 
 ===BEFORE USE ===============================
 Before using AutoFSC, you as the user must do a few things:
@@ -21,4 +21,3 @@ To run the extraction step, choose the necessary files, change the page size if 
 The combination step requires the Protocol in PDF form, already filled out, and the FS test pages, in PDF form, from the extraction step. The protocol filename must end in "protocol", and the test pages filename must end in "test-pages", case-insensitive.
 
 To run the combination step, choose the necessary files, and press the "Begin combination" button.
-
