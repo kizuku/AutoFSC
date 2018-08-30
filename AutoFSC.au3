@@ -48,6 +48,12 @@ Func main()
    Local $extractTestPagesButton = GUICtrlCreateButton("Begin extraction", 585, 10, 150, 25)
    Local $combineDocumentsButton = GUICtrlCreateButton("Begin combination", 585, 180, 150, 25)
 
+   ; Notes
+   Local $extractNoteLabel = GUICtrlCreateLabel("Note: Requires FS in PDF form and header image in JPG form.", 585, 95, 200, 80)
+   GUICtrlSetFont($extractNoteLabel, 14)
+   Local $combineDocumentsLabel = GUICtrlCreateLabel("Note: Protocol must end in 'protocol' and be a pdf. Test pagse must end in 'test-pages' and be a pdf.", 585, 265, 200, 100)
+   GUICtrlSetFont($combineDocumentsLabel, 14)
+
    ; Extract FS test pages section BEGIN
    Local $wantToExtractFS = GUICtrlCreateLabel("Extract FS Test Pages and Customize Header", 5, 10, 400)
    GUICtrlSetFont($wantToExtractFS, 14, $FW_BOLD)
@@ -316,14 +322,17 @@ Func extractTestPages($file, $header, $pages, $size)
    Send("{SPACE}")
    Send("{ENTER}")
    Sleep(1500)
+
+
    Send("!o")  ; Exit Add Header and Footer menu
 
-   ; Test header menu
-   MsgBox("", "", "Hit enter when the header is added.")
-   ;Return
+   MsgBox("", "AutoFSC", "Hit enter when the header space is made.")
+
 
 ; 13.9.2 Insert JPG bg image file into FSC Protocol
    WinWaitActive($filename & $extension & " - Adobe Acrobat Pro", "", 10)
+   WinActivate($filename & $extension & " - Adobe Acrobat Pro")
+   Sleep(1500)
    If Not WinActive($filename & $extension & " - Adobe Acrobat Pro") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when adding the header.")
 	  Return
@@ -395,6 +404,8 @@ Func extractTestPages($file, $header, $pages, $size)
    ;Return
 
    WinWaitActive($filename & $extension & " - Adobe Acrobat Pro", "", 10)
+   WinActivate($filename & $extension & " - Adobe Acrobat Pro")
+   Sleep(1500)
    If Not WinActive($filename & $extension & " - Adobe Acrobat Pro") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when closing the background menu.")
 	  Return
@@ -432,6 +443,8 @@ Func extractTestPages($file, $header, $pages, $size)
    EndIf
 
    WinWaitActive("Print", "", 10)
+   WinActivate("Print")
+   Sleep(1500)
    If Not WinActive("Print") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when closing the properties window.")
 	  Return
@@ -441,8 +454,21 @@ Func extractTestPages($file, $header, $pages, $size)
    Send("{DOWN 2}")
    Send("{TAB}")
    Send($pages)
-   MsgBox("", "AutoFSC", "Done. Please save the new file in the correct folder with -TEST-PAGES appended to the end.")
-   ;Send("{ENTER}") ; Print
+   MsgBox("", "AutoFSC", "Done. The new file will be saved in the same folder with -TEST-PAGES appended to the end.")
+   Send("{ENTER}") ; Print
+   WinWaitActive("Save PDF File As", "", 10)
+   If Not WinActive("Save PDF File As") Then
+	  MsgBox("", "AutoFSC", "Something went wrong when opening the print menu.")
+	  Return
+   EndIf
+   ControlFocus("Save PDF File As", "", "[CLASS:Edit; INSTANCE:1]")
+   Send($drive & $dir)
+   Send("{ENTER}")
+   Sleep(1500)
+   Send($filename & "-TEST-PAGES")
+   Send("{ENTER}")
+   Sleep(1500)
+   MsgBox("", "AutoFSC", "Done.")
 
 EndFunc
 
@@ -571,13 +597,18 @@ Func combineDocuments($protocol, $fs)
    Send("+{TAB 8}")
    Send("0.25")
    Sleep(1000)
+
+
    Send("!o") ; Press OK
+
 
    ; Footer test
    ;MsgBox("", "", "Done")
    ;Return
 
    WinWaitActive($name & " - Adobe Acrobat Pro", "", 10)
+   WinActivate($name & " - Adobe Acrobat Pro")
+   Sleep(1500)
    If Not WinActive($name & " - Adobe Acrobat Pro") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when closing the header window.")
 	  Return
