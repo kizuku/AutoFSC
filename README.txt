@@ -22,3 +22,4 @@ The combination step requires the Protocol in PDF form, already filled out, and 
 
 To run the combination step, choose the necessary files, and press the "Begin combination" button.
 
+When printing the final document, make sure to shrink oversized pages.

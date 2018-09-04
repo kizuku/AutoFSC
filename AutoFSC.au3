@@ -44,6 +44,9 @@ Func main()
    $GUI = GUICreate("AutoFSC Formatting", 800, 600)
    GUISetState(@SW_SHOW)
 
+   ; README
+   Local $readmeButton = GUICtrlCreateButton("Open README", 700, 550)
+
    ; Operations
    Local $extractTestPagesButton = GUICtrlCreateButton("Begin extraction", 585, 10, 150, 25)
    Local $combineDocumentsButton = GUICtrlCreateButton("Begin combination", 585, 180, 150, 25)
@@ -114,6 +117,9 @@ Func main()
 	  Switch $msg
 		 Case $GUI_EVENT_CLOSE
 			ExitLoop
+
+		 Case $readmeButton
+			Run("explorer.exe C:\Users\zhaoz29\Documents\AutoFSC\README.txt")
 
 		 ; Child window for filling out form
 		 ;Case $exampleButton
@@ -266,7 +272,7 @@ EndFunc
 ; Extract FS test pages and configure header
 Func extractTestPages($file, $header, $pages, $size)
 
-   MsgBox("", "AutoFSC", "Opening up Adobe Acrobat Pro. Your mouse will move automatically.")
+   MsgBox("", "AutoFSC", "Opening up Adobe Acrobat. Your mouse will move automatically.")
    MouseMove(@DesktopWidth * 3 / 4, @DesktopHeight - 25, 10)
    Sleep(500)
 
@@ -278,10 +284,10 @@ Func extractTestPages($file, $header, $pages, $size)
    Local $hDrive, $hDir, $hFilename, $hExtension
    _PathSplit($header, $hDrive, $hDir, $hFilename, $hExtension)
 
-   WinActivate($filename & $extension & " - Adobe Acrobat Pro")
-   WinWaitActive($filename & $extension & " - Adobe Acrobat Pro", "", 10)
+   WinActivate($filename & $extension & " - Adobe Acrobat")
+   WinWaitActive($filename & $extension & " - Adobe Acrobat", "", 10)
 
-   If NOT WinActive($filename & $extension & " - Adobe Acrobat Pro") Then
+   If NOT WinActive($filename & $extension & " - Adobe Acrobat") Then
 	  MsgBox("", "AutoFSC", "Something went wrong while opening the file.")
 	  Return
    EndIf
@@ -298,7 +304,7 @@ Func extractTestPages($file, $header, $pages, $size)
    Sleep(500)
    Send("p")
    Sleep(1000)
-   ControlClick($filename & $extension & " - Adobe Acrobat Pro", "", "[TEXT:AVScrollView]", "primary", 1, 29, 497)
+   ControlClick($filename & $extension & " - Adobe Acrobat", "", "[TEXT:AVScrollView]", "primary", 1, 29, 497)
    Sleep(500)
    Send("a")
 
@@ -330,15 +336,15 @@ Func extractTestPages($file, $header, $pages, $size)
 
 
 ; 13.9.2 Insert JPG bg image file into FSC Protocol
-   WinWaitActive($filename & $extension & " - Adobe Acrobat Pro", "", 10)
-   WinActivate($filename & $extension & " - Adobe Acrobat Pro")
+   WinWaitActive($filename & $extension & " - Adobe Acrobat", "", 10)
+   WinActivate($filename & $extension & " - Adobe Acrobat")
    Sleep(1500)
-   If Not WinActive($filename & $extension & " - Adobe Acrobat Pro") Then
+   If Not WinActive($filename & $extension & " - Adobe Acrobat") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when adding the header.")
 	  Return
    EndIf
    Sleep(500)
-   ControlClick($filename & $extension & " - Adobe Acrobat Pro", "", "[TEXT:AVScrollView]", "primary", 1, 30, 529)
+   ControlClick($filename & $extension & " - Adobe Acrobat", "", "[TEXT:AVScrollView]", "primary", 1, 30, 529)
    Sleep(500)
    Send("a")
 
@@ -403,10 +409,10 @@ Func extractTestPages($file, $header, $pages, $size)
    MsgBox("", "AutoFSC", "Hit enter when the header image is added.")
    ;Return
 
-   WinWaitActive($filename & $extension & " - Adobe Acrobat Pro", "", 10)
-   WinActivate($filename & $extension & " - Adobe Acrobat Pro")
+   WinWaitActive($filename & $extension & " - Adobe Acrobat", "", 10)
+   WinActivate($filename & $extension & " - Adobe Acrobat")
    Sleep(1500)
-   If Not WinActive($filename & $extension & " - Adobe Acrobat Pro") Then
+   If Not WinActive($filename & $extension & " - Adobe Acrobat") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when closing the background menu.")
 	  Return
    EndIf
@@ -497,7 +503,7 @@ EndFunc
 ; Combine protocol and FS and configure footer
 Func combineDocuments($protocol, $fs)
 
-   MsgBox("", "AutoFSC", "Opening up Adobe Acrobat Pro. Your mouse will move automatically.")
+   MsgBox("", "AutoFSC", "Opening up Adobe Acrobat. Your mouse will move automatically.")
    MouseMove(@DesktopWidth * 3 / 4, @DesktopHeight - 25, 10)
    Sleep(500)
 
@@ -508,9 +514,9 @@ Func combineDocuments($protocol, $fs)
    Local $name = $filename & $tempExtension
 
    ShellExecute("Acrobat.exe", $protocol)
-   WinActivate($name & " - Adobe Acrobat Pro")
-   WinWaitActive($name & " - Adobe Acrobat Pro", "", 10)
-   If Not WinActive($name & " - Adobe Acrobat Pro") Then
+   WinActivate($name & " - Adobe Acrobat")
+   WinWaitActive($name & " - Adobe Acrobat", "", 10)
+   If Not WinActive($name & " - Adobe Acrobat") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when opening the file.")
 	  Return
    EndIf
@@ -524,11 +530,11 @@ Func combineDocuments($protocol, $fs)
    Sleep(500)
    Send("p")
    Sleep(1000)
-   Local $pos = ControlGetPos($name & " - Adobe Acrobat Pro", "", "[TEXT:AVScrollView]")
+   Local $pos = ControlGetPos($name & " - Adobe Acrobat", "", "[TEXT:AVScrollView]")
    MouseMove($pos[0] + 50, $pos[1] + 200)
    MouseWheel("up", 5)
    Sleep(500)
-   ControlClick($name & " - Adobe Acrobat Pro", "", "[TEXT:AVScrollView]", "primary", 1, 28, 365)
+   ControlClick($name & " - Adobe Acrobat", "", "[TEXT:AVScrollView]", "primary", 1, 28, 365)
    WinWaitActive("Select File To Insert", "", 10)
    Sleep(500)
 
@@ -569,7 +575,7 @@ Func combineDocuments($protocol, $fs)
    Sleep(500)
    Send("p")
    Sleep(1000)
-   ControlClick($name & " - Adobe Acrobat Pro", "", "[TEXT:AVScrollView]", "primary", 1, 29, 497)
+   ControlClick($name & " - Adobe Acrobat", "", "[TEXT:AVScrollView]", "primary", 1, 29, 497)
    Sleep(500)
    Send("a")
 
@@ -606,10 +612,10 @@ Func combineDocuments($protocol, $fs)
    ;MsgBox("", "", "Done")
    ;Return
 
-   WinWaitActive($name & " - Adobe Acrobat Pro", "", 10)
-   WinActivate($name & " - Adobe Acrobat Pro")
+   WinWaitActive($name & " - Adobe Acrobat", "", 10)
+   WinActivate($name & " - Adobe Acrobat")
    Sleep(1500)
-   If Not WinActive($name & " - Adobe Acrobat Pro") Then
+   If Not WinActive($name & " - Adobe Acrobat") Then
 	  MsgBox("", "AutoFSC", "Something went wrong when closing the header window.")
 	  Return
    EndIf
